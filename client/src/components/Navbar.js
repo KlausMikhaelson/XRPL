@@ -373,7 +373,7 @@ const Navbar = () => {
               </div>
               <div className="flex w-full sm:w-auto items-center sm:items-stretch justify-end sm:justify-start">
                 <div className="flex items-center">
-                  <h2 onClick={() => navigate("/")} className="text-base cursor-pointer text-gray-700 flex font-bold leading-normal pl-3"><small className="bg-[#FFA500] px-1 rounded-md text-base text-gray-700 font-bold">Dev</small><small className="text-base text-gray-700 font-bold">Match</small></h2>
+                  <h2 onClick={() => navigate("/")} className="text-base cursor-pointer text-gray-700 flex font-bold leading-normal pl-3"><small className="bg-[#FFA500] px-1 rounded-md text-base text-gray-700 font-bold">Hack</small><small className="text-base text-gray-700 font-bold">Match</small></h2>
                 </div>
               </div>
               <div className="flex">

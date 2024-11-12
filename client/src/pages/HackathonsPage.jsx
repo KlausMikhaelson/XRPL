@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, Trophy, Users, Link2, ChevronDown } from 'lucide-react';
 import axios from "axios";
-import { backendUrl } from '../App';
+import { backendUrl, UserContext } from '../App';
 
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString('en-US', {
@@ -13,15 +13,18 @@ const formatDate = (date) => {
 
 const HackathonCard = ({ hackathon }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const {currentUser} = useContext(UserContext); 
 
   const handleJoinHackathon = async () => {
+    console.log(currentUser)
     try {
       const response = await axios.post(`${backendUrl}/api/hackathon/join`, {
         id: hackathon._id
       }, {
         headers: {
           'Content-Type': 'application/json',
-          id: hackathon._id
+          id: hackathon._id,
+          username: currentUser.username
         }
       });
       if (response.data) {

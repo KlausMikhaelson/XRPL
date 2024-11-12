@@ -56,9 +56,13 @@ exports.addUsers = async (req, res) => {
 exports.getRecommendedHackathonTeammate = async (req, res) => {
   try {
     const {username} = req.headers;
-    const {hackathonId} = req.query;
+    const {id} = req.headers;
 
-    const hackathon = await HackathonsModel.findById(hackathonId);
+    console.log(id)
+
+    const hackathon = await HackathonsModel.findById(id);
+
+    console.log(hackathon, "hackathon")
 
     if(!hackathon) {
       return res.status(404).json({message: "No Hackathon Found"});
@@ -72,9 +76,9 @@ exports.getRecommendedHackathonTeammate = async (req, res) => {
 
     // Get all users who registered for this hackathon
     const registeredUsers = await Users.find({
-      _id: { $in: hackathon.registeredUsers },
-      username: { $ne: username } // Exclude current user
-    });
+    _id: { $in: hackathon.members },
+    username: { $ne: username } // Exclude current user
+    })
 
     if(!registeredUsers.length) {
       return res.status(404).json({message: "No other users registered for this hackathon"});
