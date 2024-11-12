@@ -17,13 +17,14 @@ const {
   getJobRecommendation,
   addProjectForUser,
   getCurrentUserProject,
+  getRecommendedHackathonTeammate,
 } = require("../controllers/User");
 const app = express();
 const Router = express.Router();
 
 Router.post("/addUser", addUsers);
 // Router.get("/getrandomUser", authMiddleware, getRandomUser);
-Router.get("/getrandomUser", authMiddleware, getUserRecommendationAsperStack);
+Router.get("/getrandomUser", authMiddleware, getRecommendedHackathonTeammate);
 Router.put("/likeUser", authMiddleware, likeUser);
 Router.put("/dislikeUser", authMiddleware, DislikeUser);
 Router.get("/getMatchedUsers", authMiddleware, getMatchedUsers);

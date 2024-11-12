@@ -10,6 +10,7 @@ const { CourierClient } = require("@trycourier/courier");
 const InterestedSection = require("../models/InterestedSection");
 const axios = require("axios");
 const Projects = require("../models/Projects");
+const HackathonsModel = require("../models/Hackathons");
 
 const courier = new CourierClient({
   authorizationToken: "pk_prod_QMHBDQJEH14GB4MZA8M96DXA9FM2"
@@ -52,46 +53,69 @@ exports.addUsers = async (req, res) => {
 };
 
 
-const getRandomUser = async (req, res) => {
+exports.getRecommendedHackathonTeammate = async (req, res) => {
   try {
-    const currentUserId = req.headers.username;
-    const currentUser = await Users.findOne({ username: currentUserId });
+    const {username} = req.headers;
+    const {hackathonId} = req.query;
 
-    if (!currentUser) {
-      return res.status(404).json({ message: "User not found" });
+    const hackathon = await HackathonsModel.findById(hackathonId);
+
+    if(!hackathon) {
+      return res.status(404).json({message: "No Hackathon Found"});
     }
 
-    const excludedUserIds = [
-      ...currentUser.likedUsers,
-      ...currentUser.rejectedUsers,
-    ];
+    const currentUser = await Users.findOne({username});
+    
+    if(!currentUser) {
+      return res.status(404).json({message: "User not found"});
+    }
 
-    const allUsersExceptCurrent = await Users.find({
-      _id: { $ne: currentUser._id },
+    // Get all users who registered for this hackathon
+    const registeredUsers = await Users.find({
+      _id: { $in: hackathon.registeredUsers },
+      username: { $ne: username } // Exclude current user
     });
 
-    const filteredUsers = allUsersExceptCurrent.filter(
-      (user) => !excludedUserIds.includes(user._id.toString())
-    );
-
-    if (filteredUsers.length === 0) {
-      return res.status(200).json({ message: "No more users to show!" });
+    if(!registeredUsers.length) {
+      return res.status(404).json({message: "No other users registered for this hackathon"});
     }
 
-    const randomUser =
-      filteredUsers[Math.floor(Math.random() * filteredUsers.length)];
+    // Calculate compatibility scores based on interests and tech stack
+    const recommendedUsers = registeredUsers.map(user => {
+      let score = 0;
+      
+      // Match interests
+      currentUser.interests.forEach(interest => {
+        if(user.interests.includes(interest)) {
+          score += 1;
+        }
+      });
 
-    // Create a new object without the likedUsers property
-    const userWithoutLikedUsers = { ...randomUser.toObject() };
-    delete userWithoutLikedUsers.likedUsers;
-    delete userWithoutLikedUsers.rejectedUsers;
-    delete userWithoutLikedUsers.matchedUsers;
-    delete userWithoutLikedUsers.messageArrays;
+      // Match tech stack
+      currentUser.stack.forEach(tech => {
+        if(user.stack.includes(tech)) {
+          score += 1;
+        }
+      });
 
-    return res.status(200).json({ user: userWithoutLikedUsers });
+      return {
+        user,
+        compatibilityScore: score
+      };
+    });
+
+    // Sort by compatibility score
+    recommendedUsers.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
+
+    // Return top 5 recommendations
+    return res.status(200).json({
+      recommendations: recommendedUsers.slice(0, 5).map(r => ({
+        ...r.user.toObject(),
+        compatibilityScore: r.compatibilityScore
+      }))
+    });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Internal Server Error");
+    console.log(err)
   }
 };
 
