@@ -22,6 +22,8 @@ import { CiChat1 } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { FaWpexplorer } from "react-icons/fa";
+import { IoCreateOutline } from "react-icons/io5";
+
 
 
 const Navbar = () => {
@@ -421,6 +423,12 @@ const Navbar = () => {
                     <FaWpexplorer className="mr-2 text-xl" />
                     Explore
                   </a>
+                  <a onClick={() => {
+                    navigate("/create-hackathon");
+                  }} href="javascript: void(0)" className="flex px-5 items-center py-6 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
+                    <IoCreateOutline className="mr-2 text-xl" />
+                    Create Hackathon
+                  </a>
                   <a className="flex px-5 items-center py-6 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
                     <DynamicWidget />
                   </a>
@@ -569,12 +577,12 @@ const Navbar = () => {
                         </li>
                       </a>
                       <a onClick={() => {
-                        navigate("/get-paid")
+                        navigate("/get-hackathons")
                       }}>
                         <li className="text-gray-800 pt-8 cursor-pointer">
                           <div className="flex items-center">
-                            <GiTakeMyMoney className={`${id === "/get-paid" ? "w-6 h-6 md:w-8 md:h-8 text-indigo-700" : "w-6 h-6 md:w-8 md:h-8 text-gray-800"}`} />
-                            <p className={`${id === "/get-paid" ? "text-indigo-700 xl:text-base text-base ml-3" : "text-gray-800 xl:text-base md:text-2xl text-base ml-3"}`}>Get Paid</p>
+                            <GiTakeMyMoney className={`${id === "/get-hackathons" ? "w-6 h-6 md:w-8 md:h-8 text-indigo-700" : "w-6 h-6 md:w-8 md:h-8 text-gray-800"}`} />
+                            <p className={`${id === "/get-paid" ? "text-indigo-700 xl:text-base text-base ml-3" : "text-gray-800 xl:text-base md:text-2xl text-base ml-3"}`}>Find Hackathons</p>
                           </div>
                         </li>
                       </a>
