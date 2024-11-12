@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Client, AccountSetAsfFlags, AccountSetTfFlags } from "xrpl";
+import { UserContext } from "../App";
 
 const XRPLTokenIssuer = () => {
   const [status, setStatus] = useState("");
@@ -15,6 +16,8 @@ const XRPLTokenIssuer = () => {
     hot: null,
     cold: null,
   });
+  const { currentUserMessageList, setCurrentUserMessageList, currentChat, setCurrentChat, walletAddress, signer } =
+    useContext(UserContext);
 
   const updateStatus = (message) => {
     setStatus((prev) => prev + "\n" + message);
@@ -35,7 +38,6 @@ const XRPLTokenIssuer = () => {
       updateStatus("Connecting to Testnet...");
       await client.connect();
 
-      // Get credentials from the Testnet Faucet
       updateStatus("Requesting addresses from the Testnet faucet...");
       const hot_wallet = (await client.fundWallet()).wallet;
       const cold_wallet = (await client.fundWallet()).wallet;
@@ -139,13 +141,14 @@ const XRPLTokenIssuer = () => {
 
       const cold_balances = await client.request({
         command: "gateway_balances",
+        // TODO: need to update this later on with the winners wallet address
         account: cold_wallet.address,
         ledger_index: "validated",
-        hotwallet: [hot_wallet.address],
+        hotwallet: [walletAddress],
       });
 
       setBalances({
-        hot: hot_balances.result,
+        hot: walletAddress,
         cold: cold_balances.result,
       });
 

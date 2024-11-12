@@ -130,24 +130,25 @@ const Dashboard = () => {
     const token = localStorage.getItem("dynamic_authentication_token");
     const cleanToken = token ? token.slice(1, -1) : "";
     try {
-      const response = await axios.get(`${backendUrl}/api/auth/getrandomUser`, {
+      const response = await axios.get(`${backendUrl}/api/auth/get-recommended-hackathon-teammate`, {
         headers: {
           Authorization: `Bearer ${cleanToken}`,
           username: currentUser.username,
           email: currentUser.email,
+          id: "67333a30a0cb04b8ef9ee30f"
         },
       });
-      if (response.data.filteredUsers) {
-        setRecommendedUsers(response.data.filteredUsers[0]);
-        setUserProjects(response.data.filteredUsers[0].projects);
-        console.log(response.data.filteredUsers[0])
+      if (response.data.recommendations) {
+        setRecommendedUsers(response.data.recommendations[0]);
+        setUserProjects(response.data.recommendations[0].projects);
+        console.log(response.data.recommendations[0])
       } else {
         setRecommendedUsers({});
       }
       if (response.data) {
-        if (response.data?.filteredUsers[0]?.organizations_url) {
+        if (response.data?.recommendations[0]?.organizations_url) {
           try {
-            const org_details = await axios.get(response.data.filteredUsers[0].organizations_url);
+            const org_details = await axios.get(response.data.recommendations[0].organizations_url);
 
             if (org_details.data.length > 0) {
               setRecommendedUsers(prevRandomUser => ({

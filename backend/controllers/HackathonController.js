@@ -28,8 +28,9 @@ exports.getHackathonAttendeeById = async (req, res) => {
 
 exports.joinHackathon = async (req, res) => {
     try {
-        const hackathon = await Hackathons.findById(req.headers.hackathonId);
-        const user = req.headers.username;
+        const hackathon = await Hackathons.findById(req.headers.id);
+        
+        const {username} = req.headers;
 
         const userId = await Users.findOne({
             username
@@ -90,10 +91,15 @@ exports.updateHackathon = async (req, res) => {
         const hackathon = await Hackathons.findById(req.headers.hackathonId);
         if (hackathon) {
             if (hackathon.admins.includes(req.headers.user)) {
-                await Hackathons.findByIdAndUpdate(req.headers.hackathonId, {
-                    $set: req.body
+                const updatedHackathon = await Hackathons.findByIdAndUpdate(
+                    req.headers.hackathonId,
+                    { $set: req.body },
+                    { new: true } // This ensures the updated document is returned
+                );
+                res.status(200).json({
+                    message: "Hackathon updated successfully",
+                    data: updatedHackathon
                 });
-                res.status(200).json("Hackathon updated successfully");
             } else {
                 res.status(403).json("You are not allowed to update this hackathon");
             }

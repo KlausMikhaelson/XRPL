@@ -24,7 +24,7 @@ const Router = express.Router();
 
 Router.post("/addUser", addUsers);
 // Router.get("/getrandomUser", authMiddleware, getRandomUser);
-Router.get("/getrandomUser", authMiddleware, getRecommendedHackathonTeammate);
+Router.get("/get-recommended-hackathon-teammate", authMiddleware, getRecommendedHackathonTeammate);
 Router.put("/likeUser", authMiddleware, likeUser);
 Router.put("/dislikeUser", authMiddleware, DislikeUser);
 Router.get("/getMatchedUsers", authMiddleware, getMatchedUsers);

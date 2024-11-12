@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Calendar } from 'lucide-react';
 import axios from 'axios';
 import { backendUrl } from '../App';
+import XRPLTokenIssuer from '../components/XRPLDashboard';
 
 // UI Components
 const Button = ({ children, onClick, className = '' }) => (
@@ -452,6 +453,8 @@ const HackathonAdminDashboard = () => {
           <Button onClick={addAdmin}>Add Admin</Button>
         </div>
       </Dialog>
+
+      <XRPLTokenIssuer />
     </div>
   );
 };
