@@ -15,6 +15,9 @@ import Interested from "./pages/Interested";
 import MyProfile from "./pages/MyProfile";
 import JobList from "./pages/JobList";
 import Hackathons from "./pages/Hackathons";
+import CreateHackathon from "./pages/HackathonCreate";
+import HackathonAdminDashboard from "./pages/UpdateHackathon";
+import HackathonsPage from "./pages/HackathonsPage";
 
 const Routers = () => {
   const [user, setUser] = useState("");
@@ -32,6 +35,9 @@ const Routers = () => {
         <Route path="/get-paid" element={Object.keys(currentUser).length ? <JobList /> : <Home />} />
         <Route path="/explore" element={Object.keys(currentUser).length ? <Interested /> : <Home />} />
         {/* <Route path="/hackathons" element={Object.keys(currentUser).length > 0 ? <Hackathons /> : <Home />} /> */}
+        <Route path="/create-hackathon" element={<CreateHackathon />} />
+        <Route path="/update-hackathon" element={<HackathonAdminDashboard />} />
+        <Route path="/get-hackathons" element={<HackathonsPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

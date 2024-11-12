@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { backendUrl } from "../App";
 
 const CreateHackathon = () => {
   const [formData, setFormData] = useState({
@@ -32,6 +34,43 @@ const CreateHackathon = () => {
     });
   };
 
+  const handleCreateHackathon = async (e) => {
+    e.preventDefault(); // Fixed typo here
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/hackathon/create-hackathon`,
+        formData,  // Sending the form data
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        alert('Hackathon created successfully!');
+        // Optionally redirect to another page or clear the form
+        setFormData({
+          title: "",
+          description: "",
+          image_url: "",
+          url: "",
+          start_date: "",
+          end_date: "",
+          members: [],
+          prizes: [{ name: "", amount: "", description: "" }],
+          sponsors: [{ name: "", url: "" }],
+          judges: [{ name: "", url: "" }],
+          admins: [],
+        });
+      }
+    } catch (error) {
+      console.error('Error creating hackathon:', error);
+      alert('Failed to create hackathon. Please try again.');
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-8 space-y-8">
@@ -39,7 +78,8 @@ const CreateHackathon = () => {
           Create a Hackathon
         </h1>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleCreateHackathon}>
+          {/* Rest of your form JSX remains the same */}
           <div>
             <label className="block text-sm font-semibold text-gray-600">
               Title
@@ -218,7 +258,7 @@ const CreateHackathon = () => {
             type="submit"
             className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
           >
-            Submit
+            Create Hackathon
           </button>
         </form>
       </div>

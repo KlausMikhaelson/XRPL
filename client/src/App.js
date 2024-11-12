@@ -8,8 +8,8 @@ import { ZeroDevSmartWalletConnectors } from "@dynamic-labs/ethereum-aa";
 import { Analytics } from "@vercel/analytics/react";
 
 export const UserContext = createContext();
-export const backendUrl = "https://comebackbuilding.onrender.com";
-//export const backendUrl = "http://localhost:3001";
+// export const backendUrl = "https://comebackbuilding.onrender.com";
+export const backendUrl = "http://localhost:3001";
 // export const backendUrl = "https://comebackbuilding.onrender.com";
 function App() {
   const [users, setUsers] = useState({});

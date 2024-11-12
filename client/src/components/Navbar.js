@@ -410,10 +410,10 @@ const Navbar = () => {
                     Match
                   </a>
                   <a onClick={() => {
-                    navigate("/get-paid");
+                    navigate("/get-hackathons");
                   }} href="javascript: void(0)" className="flex px-5 items-center py-6 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
                     <GiTakeMyMoney className="mr-2 text-xl" />
-                    Get Paid
+                    Find Hackathons
                   </a>
                   <a onClick={() => {
                     navigate("/explore");

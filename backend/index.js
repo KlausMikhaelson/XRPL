@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const UserRoutes = require("./routes/Users");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
+const hackathonRoutes = require("./routes/Hackathons");
 require("dotenv").config();
 
 app.use(cors({
@@ -12,7 +13,7 @@ app.use(cors({
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
-  allowedHeaders: 'Content-Type,authorization,email,page,username',
+  allowedHeaders: 'Content-Type,authorization,email,page,username,id',
 }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", UserRoutes);
+app.use("/api/hackathon", hackathonRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI, {
