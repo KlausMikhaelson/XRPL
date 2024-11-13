@@ -1,5 +1,3 @@
-Here's a slightly more condensed version of the markdown:
-
 # HackMatch
 
 ## Project Description
